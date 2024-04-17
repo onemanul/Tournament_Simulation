@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <locale.h>
-#define n 16    // начальное количество игроков
-#define m 7     // игроки, уже занявшие места в таблице
+#define n 16    // РЅР°С‡Р°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РёРіСЂРѕРєРѕРІ
+#define m 7     // РёРіСЂРѕРєРё, СѓР¶Рµ Р·Р°РЅСЏРІС€РёРµ РјРµСЃС‚Р° РІ С‚Р°Р±Р»РёС†Рµ
 double graf[n][n] = {
     //     G      E     Z     I     M     P     S     C     9     0     1     2     3     4     5     6
 /*G*/   {    0, 0.75, 0.80, 0.70, 0.65, 0.95, 0.60, 0.50, 0.60, 0.85, 0.95, 0.45, 0.50, 0.70, 0.80, 0.55 },
@@ -21,24 +21,24 @@ double graf[n][n] = {
 /*5*/   { 0.20, 0.65, 0.45, 0.55, 0.50, 0.75, 0.35, 0.20, 0.30, 0.70, 0.85, 0.10, 0.15, 0.25,    0, 0.30 },
 /*6*/   { 0.45, 0.85, 0.65, 0.75, 0.70, 0.95, 0.60, 0.55, 0.50, 0.80, 0.90, 0.60, 0.40, 0.60, 0.70,    0 } };
 
-void swap (int *a, int *b) {            // поменять местами два значения
+void swap (int *a, int *b) {            // РїРѕРјРµРЅСЏС‚СЊ РјРµСЃС‚Р°РјРё РґРІР° Р·РЅР°С‡РµРЅРёСЏ
     int t = *a;
     *a = *b;
     *b = t;
 }
-void rand_perest (int *a, int razm) {   // рандомная перестановка элементов массива
+void rand_perest (int *a, int razm) {   // СЂР°РЅРґРѕРјРЅР°СЏ РїРµСЂРµСЃС‚Р°РЅРѕРІРєР° СЌР»РµРјРµРЅС‚РѕРІ РјР°СЃСЃРёРІР°
     int j;
     for (int i=razm-1; i>0; --i) {
         j = rand()%(i+1);
         swap(&a[i],&a[j]);
     }
 }
-int itisnot (int *a, int x) {           // ищет число в массиве: если его нет - возвращает 1
+int itisnot (int *a, int x) {           // РёС‰РµС‚ С‡РёСЃР»Рѕ РІ РјР°СЃСЃРёРІРµ: РµСЃР»Рё РµРіРѕ РЅРµС‚ - РІРѕР·РІСЂР°С‰Р°РµС‚ 1
     for (int i=0; i<m; ++i)
         if (a[i]==x) return 0;
     return 1;
 }
-void fill_ost (int *a, int *ost, int razm, int our) {   // добавляет в массив2 только числа, которых нет в массиве1
+void fill_ost (int *a, int *ost, int razm, int our) {   // РґРѕР±Р°РІР»СЏРµС‚ РІ РјР°СЃСЃРёРІ2 С‚РѕР»СЊРєРѕ С‡РёСЃР»Р°, РєРѕС‚РѕСЂС‹С… РЅРµС‚ РІ РјР°СЃСЃРёРІРµ1
     int k=1;
     for (int i=0; i<razm; ++i) {
         if ((k!=our)&&(itisnot(a,k))) ost[i]=k;
@@ -46,8 +46,8 @@ void fill_ost (int *a, int *ost, int razm, int our) {   // добавляет в массив2 т
         ++k;
     }
 }
-void perest_ost (int *pl, int *rasklad, int *ostigr, int razm, int our_pl) {   // дополняет расклад остальными игроками
-    // заняты: places[0-3]-1, ostpl[i]-1 razm=n-m-1
+void perest_ost (int *pl, int *rasklad, int *ostigr, int razm, int our_pl) {   // РґРѕРїРѕР»РЅСЏРµС‚ СЂР°СЃРєР»Р°Рґ РѕСЃС‚Р°Р»СЊРЅС‹РјРё РёРіСЂРѕРєР°РјРё
+    // Р·Р°РЅСЏС‚С‹: places[0-3]-1, ostpl[i]-1 razm=n-m-1
     int k=0;
     for (int i=0; i<razm; ++i) {
         if ((k+1!=our_pl)&&(itisnot(pl,k+1))) rasklad[k]=ostigr[i];
@@ -55,7 +55,7 @@ void perest_ost (int *pl, int *rasklad, int *ostigr, int razm, int our_pl) {   /
         ++k;
     }
 }
-double formula (int *rasklad, int place, int N) { // изначально N - количество игроков; i в main = place
+double formula (int *rasklad, int place, int N) { // РёР·РЅР°С‡Р°Р»СЊРЅРѕ N - РєРѕР»РёС‡РµСЃС‚РІРѕ РёРіСЂРѕРєРѕРІ; i РІ main = place
     if (N/2==1) {
         if (place%2==0) return graf[rasklad[place]-1][rasklad[place+1]-1];
         else return graf[rasklad[place]-1][rasklad[place-1]-1];
@@ -79,32 +79,32 @@ int main() {
     int igr[m], places[m], ostigr[n-m-1], ostpl[n-m], rasklad[n], t=0, our,BP;
     double sred=0, ver=0;
 
-// ввод игроков и мест, заполнение в массивы оставшихся
-    printf ("Введите номер игрока и его место (%d раз):\n", m);
+// РІРІРѕРґ РёРіСЂРѕРєРѕРІ Рё РјРµСЃС‚, Р·Р°РїРѕР»РЅРµРЅРёРµ РІ РјР°СЃСЃРёРІС‹ РѕСЃС‚Р°РІС€РёС…СЃСЏ
+    printf ("Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РёРіСЂРѕРєР° Рё РµРіРѕ РјРµСЃС‚Рѕ (%d СЂР°Р·):\n", m);
     for (int i=0; i<m; ++i) scanf ("%d %d", &igr[i],&places[i]);
     for (int i=0; i<m; ++i)
         rasklad[places[i]-1]=igr[i];
-    printf ("Введите номер нашего игрока:\n");
+    printf ("Р’РІРµРґРёС‚Рµ РЅРѕРјРµСЂ РЅР°С€РµРіРѕ РёРіСЂРѕРєР°:\n");
     scanf ("%d", &our);
     fill_ost(igr,ostigr,n-m-1,our);
     fill_ost(places,ostpl,n-m,0);
 
-    for (int i=0; i<n-m; ++i) { // на каждое пустое место ставим нашего
-        do {    // рандомно расставляем ост игроков по ост местам t раз, считаем вероятность нашего
+    for (int i=0; i<n-m; ++i) { // РЅР° РєР°Р¶РґРѕРµ РїСѓСЃС‚РѕРµ РјРµСЃС‚Рѕ СЃС‚Р°РІРёРј РЅР°С€РµРіРѕ
+        do {    // СЂР°РЅРґРѕРјРЅРѕ СЂР°СЃСЃС‚Р°РІР»СЏРµРј РѕСЃС‚ РёРіСЂРѕРєРѕРІ РїРѕ РѕСЃС‚ РјРµСЃС‚Р°Рј t СЂР°Р·, СЃС‡РёС‚Р°РµРј РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РЅР°С€РµРіРѕ
             rand_perest(ostigr,n-m-1);
             rasklad[ostpl[i]-1]=our;
             perest_ost(places,rasklad,ostigr,n-m-1,ostpl[i]);
             ver += formula(rasklad,ostpl[i]-1,n);
             t++;
         } while (t<10000);
-        printf ("средняя вероятность победы для места %d: %f\n", ostpl[i],ver/t);
-        if ((ver/t)>sred) { // выбираем лучшую вероятность и место
+        printf ("СЃСЂРµРґРЅСЏСЏ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РїРѕР±РµРґС‹ РґР»СЏ РјРµСЃС‚Р° %d: %f\n", ostpl[i],ver/t);
+        if ((ver/t)>sred) { // РІС‹Р±РёСЂР°РµРј Р»СѓС‡С€СѓСЋ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ Рё РјРµСЃС‚Рѕ
             sred = ver/t;
             BP = ostpl[i];
         }
         ver=t=0;
     }
-    printf ("Лучшее место для участника %d: %d (средняя вероятность победы: %f)\n", our, BP,sred);
+    printf ("Р›СѓС‡С€РµРµ РјРµСЃС‚Рѕ РґР»СЏ СѓС‡Р°СЃС‚РЅРёРєР° %d: %d (СЃСЂРµРґРЅСЏСЏ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊ РїРѕР±РµРґС‹: %f)\n", our, BP,sred);
 
 return 0;
 }
